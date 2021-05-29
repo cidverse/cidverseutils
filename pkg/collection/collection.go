@@ -2,9 +2,7 @@ package collection
 
 import "reflect"
 
-/**
- * Checks if a object is part of a array
- */
+// InArray checks if a slice contains a element
 func InArray(val interface{}, array interface{}) (exists bool, index int) {
 	exists = false
 	index = -1

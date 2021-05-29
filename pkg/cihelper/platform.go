@@ -1,9 +1,9 @@
 package cihelper
 
 import (
+	"github.com/mattn/go-isatty"
 	"os"
 	"os/exec"
-	"reflect"
 )
 
 // IsCIEnvironment checks if this process in running as part of a CI process
@@ -42,25 +42,11 @@ func IsExecutableInPath(executable string) bool {
 	return true
 }
 
-/**
- * Checks if a object is part of a array
- */
-func InArray(val interface{}, array interface{}) (exists bool, index int) {
-	exists = false
-	index = -1
-
-	switch reflect.TypeOf(array).Kind() {
-	case reflect.Slice:
-		s := reflect.ValueOf(array)
-
-		for i := 0; i < s.Len(); i++ {
-			if reflect.DeepEqual(val, s.Index(i).Interface()) == true {
-				index = i
-				exists = true
-				return
-			}
-		}
+// IsInteractiveTerminal checks if the current session is/supports interactive
+func IsInteractiveTerminal() bool {
+	if isatty.IsTerminal(os.Stdout.Fd()) || isatty.IsCygwinTerminal(os.Stdout.Fd()) || IsWindowsTerminal() {
+		return true
 	}
 
-	return
+	return false
 }
