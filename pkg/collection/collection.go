@@ -22,3 +22,14 @@ func InArray(val interface{}, array interface{}) (exists bool, index int) {
 
 	return
 }
+
+// GetMapValueOrDefault returns a value in a map or a default value
+func GetMapValueOrDefault(entity map[string]string, key string, defaultValue string) (val string) {
+	value, found := entity[key]
+
+	if found {
+		return value
+	}
+
+	return defaultValue
+}
