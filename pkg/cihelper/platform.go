@@ -4,6 +4,7 @@ import (
 	"github.com/mattn/go-isatty"
 	"os"
 	"os/exec"
+	"strings"
 )
 
 // IsCIEnvironment checks if this process in running as part of a CI process
@@ -49,4 +50,42 @@ func IsInteractiveTerminal() bool {
 	}
 
 	return false
+}
+
+// ToUnixPath turns a windows path into a unix path
+func ToUnixPath(path string) string {
+	driveLetters := []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
+	for _, element := range driveLetters {
+		if strings.HasPrefix(path, element+":\\") {
+			path = strings.Replace(path, element+":\\", "/"+element+"/", 1)
+		}
+	}
+
+	// replace windows path separator with linux path separator
+	path = strings.Replace(path, "\\", "/", -1)
+
+	return path
+}
+
+// ToUnixPathArgs checks each argument and turns it into a unix path if needed
+func ToUnixPathArgs(data string) string {
+	argList := strings.Split(data, " ")
+	isWindowsPath := false
+
+	for _, a := range argList {
+		driveLetters := []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
+		for _, element := range driveLetters {
+			if strings.HasPrefix(a, element+":\\") {
+				data = strings.Replace(data, element+":\\", "/"+element+"/", 1)
+				isWindowsPath = true
+			}
+		}
+	}
+
+	// replace windows path separator with linux path separator
+	if isWindowsPath {
+		data = strings.Replace(data, "\\", "/", -1)
+	}
+
+	return data
 }
