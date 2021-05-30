@@ -1,6 +1,8 @@
 package collection
 
-import "reflect"
+import (
+	"reflect"
+)
 
 // InArray checks if a slice contains a element
 func InArray(val interface{}, array interface{}) (exists bool, index int) {
@@ -32,10 +34,4 @@ func MapGetValueOrDefault(entity map[string]string, key string, defaultValue str
 	}
 
 	return defaultValue
-}
-
-// MapHasKey checks if a map contains a key
-func MapHasKey(inputMap map[string]interface{}, key string) bool {
-	_, hasKey := inputMap[key]
-	return hasKey
 }
