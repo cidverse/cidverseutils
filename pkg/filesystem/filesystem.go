@@ -169,6 +169,16 @@ func FileExists(filename string) bool {
 	return !info.IsDir()
 }
 
+// DirectoryExists checks if the dir exists and returns a boolean
+func DirectoryExists(dir string) bool {
+	info, err := os.Stat(dir)
+	if err != nil {
+		return false
+	}
+
+	return info.IsDir()
+}
+
 // FileContainsString will check if a file contains the string
 func FileContainsString(file string, str string) bool {
 	content, contentErr := GetFileContent(file)
