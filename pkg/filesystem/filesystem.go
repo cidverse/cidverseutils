@@ -74,7 +74,7 @@ func FindFilesInDirectory(directory string, extension string) ([]string, error) 
 	var files []string
 
 	err := filepath.Walk(directory, func(path string, info os.FileInfo, err error) error {
-		if !info.IsDir() {
+		if info != nil && !info.IsDir() {
 			if len(extension) > 0 {
 				if strings.HasSuffix(path, extension) {
 					files = append(files, path)
