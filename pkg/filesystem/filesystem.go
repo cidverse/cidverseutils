@@ -69,15 +69,18 @@ func GetProjectDirectory() (string, error) {
 	return "", errors.New("didn't find any repositories for the current working directory")
 }
 
-// FindFilesInDirectory will return all files with a specific extension in a directory
-func FindFilesInDirectory(directory string, extension string) ([]string, error) {
+// FindFilesByExtension will return all files with a specific extension in a directory
+func FindFilesByExtension(directory string, extensions []string) ([]string, error) {
 	var files []string
 
 	err := filepath.Walk(directory, func(path string, info os.FileInfo, err error) error {
 		if info != nil && !info.IsDir() {
-			if len(extension) > 0 {
-				if strings.HasSuffix(path, extension) {
-					files = append(files, path)
+			if len(extensions) > 0 {
+				for _, ext := range extensions {
+					if strings.HasSuffix(path, ext) {
+						files = append(files, path)
+						break
+					}
 				}
 			} else {
 				files = append(files, path)
