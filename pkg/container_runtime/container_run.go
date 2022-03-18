@@ -50,7 +50,7 @@ func (c *Container) AddVolume(mount ContainerMount) {
 	// modify mount source on MinGW environments
 	if cihelper.IsMinGW() {
 		// git bash / cygwin needs the host path escaped with a leading / -> //c so that it works correctly
-		mount.Source = "/"+mount.Source
+		mount.Source = "/" + mount.Source
 	}
 
 	c.volumes = append(c.volumes, mount)
@@ -98,7 +98,7 @@ func (c *Container) SetWorkingDirectory(newWorkingDirectory string) {
 	// MinGW environments
 	if cihelper.IsMinGW() {
 		// git bash / cygwin needs the host path escaped with a leading / -> //c so that it works correctly
-		c.workingDirectory = "/"+c.workingDirectory
+		c.workingDirectory = "/" + c.workingDirectory
 	}
 }
 
@@ -161,11 +161,12 @@ func (c *Container) AddAllEnvironmentVariables() {
 			// windows
 			"PROGRAMDATA",
 			"PROGRAMFILES",
-			"PROGRAMFILES(x86)", 
+			"PROGRAMFILES(x86)",
 			"PROGRAMW6432",
 			"COMMONPROGRAMFILES",
 			"COMMONPROGRAMFILES(x86)",
 			"COMMONPROGRAMW6432",
+			"PATHEXT",
 			// proxy
 			"HTTP_PROXY",
 			"HTTPS_PROXY",
@@ -174,12 +175,12 @@ func (c *Container) AddAllEnvironmentVariables() {
 		// recent issue of 2009 about git bash / mingw setting invalid unix variables with `var(86)=...`
 		isInvalidName := strings.Contains(envName, "(") || strings.Contains(envName, ")")
 		if !isExcluded && !isInvalidName {
-			log.Debug().Msg("Added environment variable "+envName+" ["+envValue+"] from host!")
+			log.Debug().Msg("Added environment variable " + envName + " [" + envValue + "] from host!")
 			c.AddEnvironmentVariable(envName, envValue)
 		} else if !isExcluded {
-			log.Debug().Msg("Excluded env variable "+envName+" ["+envValue+"]  from host because of a invalid variable name.")
+			log.Debug().Msg("Excluded env variable " + envName + " [" + envValue + "]  from host because of a invalid variable name.")
 		} else {
-			log.Debug().Msg("Excluded env variable "+envName+" ["+envValue+"]  from host based on the filter rule.")
+			log.Debug().Msg("Excluded env variable " + envName + " [" + envValue + "]  from host based on the filter rule.")
 		}
 	}
 }
@@ -205,11 +206,11 @@ func (c *Container) DetectRuntime() string {
 func (c *Container) GetPullCommand(runtime string) (string, error) {
 	// autodetect container runtime
 	if runtime == "podman" {
-		return "podman pull "+c.image, nil
+		return "podman pull " + c.image, nil
 	} else if runtime == "docker" {
-		return "docker pull "+c.image, nil
+		return "docker pull " + c.image, nil
 	} else {
-		return "", errors.New("No supported container runtime found (podman, docker, docker toolbox)! ["+runtime+"]")
+		return "", errors.New("No supported container runtime found (podman, docker, docker toolbox)! [" + runtime + "]")
 	}
 }
 
@@ -255,4 +256,3 @@ func (c *Container) PullImage() {
 		os.Exit(1)
 	}
 }
-

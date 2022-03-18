@@ -13,7 +13,7 @@ func setTerminalParameters(shellCommand *bytes.Buffer) {
 	if cihelper.IsCIEnvironment() {
 		// env variable CI is set, we can't use --tty or --interactive here
 	} else if cihelper.IsInteractiveTerminal() {
-		shellCommand.WriteString("-ti") // --tty --interactive
+		shellCommand.WriteString("-ti ") // --tty --interactive
 	}
 }
 

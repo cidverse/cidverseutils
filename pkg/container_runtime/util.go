@@ -98,7 +98,7 @@ func systemExec(command string) error {
 			log.Fatal().Err(err).Msg("Failed to execute command")
 			return err
 		}
-    }
+	}
 
 	return nil
 }
