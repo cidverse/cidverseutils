@@ -2,6 +2,7 @@ package container_runtime
 
 import (
 	"fmt"
+	"github.com/cidverse/cidverseutils/pkg/cihelper"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"strconv"
@@ -9,6 +10,9 @@ import (
 )
 
 func TestPodmanSetParamsInteractive(t *testing.T) {
+	if !cihelper.IsInteractiveTerminal() {
+		return
+	}
 	container := Container{}
 	_ = os.Unsetenv("CI")
 
