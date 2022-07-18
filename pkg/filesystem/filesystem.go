@@ -10,12 +10,10 @@ import (
 
 // CreateDirectory creates a new folder if not present, ignores errors
 func CreateDirectory(dir string) {
-	os.MkdirAll(dir, os.ModePerm)
+	_ = os.MkdirAll(dir, os.ModePerm)
 }
 
-/**
- * Get the relative path in relation to the rootDirectory
- */
+// GetPathRelativeToDirectory returns the relative path in relation to the rootDirectory
 func GetPathRelativeToDirectory(currentDirectory string, rootDirectory string) string {
 	relativePath := strings.Replace(currentDirectory, rootDirectory, "", 1)
 	relativePath = strings.Replace(relativePath, "\\", "/", -1)
@@ -24,9 +22,7 @@ func GetPathRelativeToDirectory(currentDirectory string, rootDirectory string) s
 	return relativePath
 }
 
-/**
- * Get the execution directory
- */
+// GetExecutionDirectory returns the execution directory
 func GetExecutionDirectory() string {
 	ex, err := os.Executable()
 	if err != nil {
