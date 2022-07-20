@@ -2,7 +2,6 @@ package filesystem
 
 import (
 	"errors"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -16,7 +15,7 @@ func CreateDirectory(dir string) {
 // GetPathRelativeToDirectory returns the relative path in relation to the rootDirectory
 func GetPathRelativeToDirectory(currentDirectory string, rootDirectory string) string {
 	relativePath := strings.Replace(currentDirectory, rootDirectory, "", 1)
-	relativePath = strings.Replace(relativePath, "\\", "/", -1)
+	relativePath = strings.ReplaceAll(relativePath, "\\", "/")
 	relativePath = strings.Trim(relativePath, "/")
 
 	return relativePath
@@ -92,17 +91,6 @@ func FindFilesByExtension(directory string, extensions []string) ([]string, erro
 	return files, nil
 }
 
-// CreateFileWithContent will create a new file with content
-func CreateFileWithContent(file string, data string) error {
-	err := ioutil.WriteFile(file, []byte(data), 0)
-
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 // RemoveFile will delete a file
 func RemoveFile(file string) error {
 	err := os.Remove(file)
@@ -126,12 +114,11 @@ func MoveFile(oldLocation string, newLocation string) error {
 // GetFileBytes will retrieve the content of a file as bytes
 func GetFileBytes(file string) ([]byte, error) {
 	if _, err := os.Stat(file); !os.IsNotExist(err) {
-		fileBytes, fileErr := ioutil.ReadFile(file)
+		fileBytes, fileErr := os.ReadFile(file)
 		if fileErr == nil {
 			return fileBytes, nil
-		} else {
-			return nil, err
 		}
+		return nil, err
 	}
 
 	return nil, errors.New("file does not exist")
@@ -140,27 +127,24 @@ func GetFileBytes(file string) ([]byte, error) {
 // GetFileContent will retrieve the content of a file as text
 func GetFileContent(file string) (string, error) {
 	if _, err := os.Stat(file); !os.IsNotExist(err) {
-		fileBytes, fileErr := ioutil.ReadFile(file)
+		fileBytes, fileErr := os.ReadFile(file)
 		if fileErr == nil {
 			return string(fileBytes), nil
-		} else {
-			return "", err
 		}
+		return "", err
 	}
 
 	return "", errors.New("file does not exist")
 }
 
-// SaveFileContent will save a file with the provided content
-func SaveFileContent(file string, content string) error {
+// SaveFileText will save a file with the provided content
+func SaveFileText(file string, content string) error {
 	data := []byte(content)
-
-	err := ioutil.WriteFile(file, data, 0)
-
+	err := os.WriteFile(file, data, os.ModePerm)
 	return err
 }
 
-// FileExists checks if the file exists and returns a boolean
+// FileExists checks if the file exists
 func FileExists(filename string) bool {
 	info, err := os.Stat(filename)
 	if err != nil {
@@ -170,7 +154,7 @@ func FileExists(filename string) bool {
 	return !info.IsDir()
 }
 
-// DirectoryExists checks if the dir exists and returns a boolean
+// DirectoryExists checks if the dir exists
 func DirectoryExists(dir string) bool {
 	info, err := os.Stat(dir)
 	if err != nil {
