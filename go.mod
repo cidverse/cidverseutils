@@ -1,6 +1,6 @@
 module github.com/cidverse/cidverseutils
 
-go 1.18
+go 1.18.4
 
 require (
 	github.com/mattn/go-isatty v0.0.14
