@@ -6,7 +6,7 @@ import (
 	"os"
 	"strconv"
 
-	isatty "github.com/mattn/go-isatty"
+	"github.com/mattn/go-isatty"
 )
 
 // GetPodmanCommand renders the command needed the run the container using podman
@@ -38,7 +38,7 @@ func (c *Container) GetPodmanCommand() string {
 	publishPorts(&shellCommand, &c.containerPorts)
 	// - capabilities
 	for _, cap := range c.capabilities {
-		shellCommand.WriteString(fmt.Sprintf("--cap-add %s", strconv.Quote(cap)))
+		shellCommand.WriteString(fmt.Sprintf("--cap-add %s ", strconv.Quote(cap)))
 	}
 	// - set working directory
 	if len(c.workingDirectory) > 0 {
