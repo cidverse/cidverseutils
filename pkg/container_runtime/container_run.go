@@ -215,7 +215,7 @@ func (c *Container) GetPullCommand(runtime string) (string, error) {
 }
 
 // GetRunCommand gets the run command for the specified container runtime
-func (c *Container) GetRunCommand(runtime string) string {
+func (c *Container) GetRunCommand(runtime string) (string, error) {
 	var shellCommand bytes.Buffer
 
 	// autodetect container runtime
@@ -224,14 +224,14 @@ func (c *Container) GetRunCommand(runtime string) string {
 	} else if runtime == "docker" {
 		shellCommand.WriteString(c.GetDockerCommand())
 	} else {
-		log.Fatal().Str("runtime", runtime).Msg("Container Runtime is not supported!")
+		return "", errors.New("container runtime [" + runtime + "] is not supported!")
 	}
 
-	return shellCommand.String()
+	return shellCommand.String(), nil
 }
 
 // StartContainer starts the Container
-func (c *Container) StartContainer() {
+func (c *Container) StartContainer() error {
 	var shellCommand bytes.Buffer
 
 	// - workaround for docker toolbox (will be deprecated and removed from envcli when WSL 2 is released)
@@ -240,19 +240,22 @@ func (c *Container) StartContainer() {
 	}
 
 	// - command
-	shellCommand.WriteString(c.GetRunCommand(c.DetectRuntime()))
+	runCmd, runCmdErr := c.GetRunCommand(c.DetectRuntime())
+	if runCmdErr != nil {
+		return runCmdErr
+	}
+	shellCommand.WriteString(runCmd)
 
 	// execute command
-	systemExec(shellCommand.String())
+	return systemExec(shellCommand.String())
 }
 
 // PullImage pulls the image for the container
-func (c *Container) PullImage() {
+func (c *Container) PullImage() error {
 	pullCmd, pullCmdErr := c.GetPullCommand(c.DetectRuntime())
 	if pullCmdErr == nil {
-		systemExec(pullCmd)
+		return systemExec(pullCmd)
 	} else {
-		log.Error().Err(pullCmdErr).Msg("Can't pull image")
-		os.Exit(1)
+		return errors.New("can't pull image")
 	}
 }
