@@ -25,6 +25,7 @@ type Container struct {
 	containerPorts   []ContainerPort
 	capabilities     []string
 	userArgs         string
+	privileged       bool
 }
 
 // SetName sets a new name for the container
@@ -46,6 +47,11 @@ func (c *Container) SetImage(newImage string) {
 func (c *Container) AddVolume(mount ContainerMount) {
 	mount.Target = ToUnixPath(mount.Target)
 	c.volumes = append(c.volumes, mount)
+}
+
+// SetPrivileged toggels the privileged flag
+func (c *Container) SetPrivileged(privileged bool) {
+	c.privileged = privileged
 }
 
 // AddCacheMount adds a cache mount to the container

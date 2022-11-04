@@ -28,9 +28,13 @@ func (c *Container) GetDockerCommand() string {
 	setEnvironmentVariables(&shellCommand, &c.environment)
 	// - publish ports
 	publishPorts(&shellCommand, &c.containerPorts)
-	// - capabilities
-	for _, cap := range c.capabilities {
-		shellCommand.WriteString(fmt.Sprintf("--cap-add %s ", strconv.Quote(cap)))
+	// - capabilities / privileged
+	if c.privileged == true {
+		shellCommand.WriteString(fmt.Sprintf("--privileged "))
+	} else {
+		for _, cap := range c.capabilities {
+			shellCommand.WriteString(fmt.Sprintf("--cap-add %s ", strconv.Quote(cap)))
+		}
 	}
 	// - set working directory
 	if len(c.workingDirectory) > 0 {
