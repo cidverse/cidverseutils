@@ -3,20 +3,12 @@ package container_runtime
 import (
 	"bytes"
 	"fmt"
-	"os"
 	"strconv"
-
-	"github.com/mattn/go-isatty"
 )
 
 // GetPodmanCommand renders the command needed the run the container using podman
 func (c *Container) GetPodmanCommand() string {
 	var shellCommand bytes.Buffer
-
-	// detect cygwin -> needs winpty on windows
-	if isatty.IsCygwinTerminal(os.Stdout.Fd()) {
-		shellCommand.WriteString("winpty ")
-	}
 
 	// build command
 	shellCommand.WriteString("podman run --rm ")

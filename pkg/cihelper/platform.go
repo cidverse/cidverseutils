@@ -17,16 +17,6 @@ func IsCIEnvironment() (val bool) {
 	return false
 }
 
-// IsMinGW checks if the current execution context is a Minimalist GNU for Windows environment (cygwin / git bash)
-func IsMinGW() bool {
-	value, _ := os.LookupEnv("MSYSTEM")
-	if value == "MINGW64" {
-		return true
-	}
-
-	return false
-}
-
 // IsWindowsTerminal checks if the current execution context is the new windows terminal
 func IsWindowsTerminal() bool {
 	_, isPresent := os.LookupEnv("WT_SESSION")

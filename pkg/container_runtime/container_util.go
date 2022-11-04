@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/cidverse/cidverseutils/pkg/cihelper"
-	"runtime"
 	"strconv"
 	"strings"
 )
@@ -22,17 +21,6 @@ func volumeMount(shellCommand *bytes.Buffer, mounts *[]ContainerMount) {
 		if containerMount.MountType == "directory" {
 			var mountSource = containerMount.Source
 			var mountTarget = containerMount.Target
-
-			// docker toolbox doesn't support direct mounts, so we have to use the shared folder feature
-			if IsDockerToolbox() && runtime.GOOS == "windows" {
-				driveLetters := []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
-				for _, element := range driveLetters {
-					mountSource = strings.Replace(mountSource, element+":\\", "/"+element+"_DRIVE/", 1)
-				}
-
-				// replace windows path separator with linux path separator
-				mountSource = strings.Replace(mountSource, "\\", "/", -1)
-			}
 
 			shellCommand.WriteString(fmt.Sprintf("-v %s ", strconv.Quote(mountSource+":"+mountTarget)))
 		}

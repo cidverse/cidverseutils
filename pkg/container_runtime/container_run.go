@@ -3,7 +3,6 @@ package container_runtime
 import (
 	"bytes"
 	"errors"
-	"github.com/cidverse/cidverseutils/pkg/cihelper"
 	"github.com/cidverse/cidverseutils/pkg/collection"
 	"github.com/rs/zerolog/log"
 	"os"
@@ -45,14 +44,7 @@ func (c *Container) SetImage(newImage string) {
 
 // AddVolume mounts a directory into a container
 func (c *Container) AddVolume(mount ContainerMount) {
-	mount.Source = ToUnixPath(mount.Source)
-
-	// modify mount source on MinGW environments
-	if cihelper.IsMinGW() {
-		// git bash / cygwin needs the host path escaped with a leading / -> //c so that it works correctly
-		mount.Source = "/" + mount.Source
-	}
-
+	mount.Target = ToUnixPath(mount.Target)
 	c.volumes = append(c.volumes, mount)
 }
 
@@ -67,8 +59,8 @@ func (c *Container) AddCacheMount(name string, sourcePath string, targetPath str
 func (c *Container) AllowContainerRuntimeAcccess() {
 	socketPath := "/var/run/docker.sock"
 	if runtime.GOOS == "windows" {
+		// docker desktop
 		if IsDockerNative() {
-			// docker desktop
 			socketPath = "//var/run/docker.sock"
 		}
 	}
@@ -94,12 +86,6 @@ func (c *Container) SetCommand(newCommand string) {
 // SetWorkingDirectory sets the working directory
 func (c *Container) SetWorkingDirectory(newWorkingDirectory string) {
 	c.workingDirectory = newWorkingDirectory
-
-	// MinGW environments
-	if cihelper.IsMinGW() {
-		// git bash / cygwin needs the host path escaped with a leading / -> //c so that it works correctly
-		c.workingDirectory = "/" + c.workingDirectory
-	}
 }
 
 // AddContainerPort publishes a port
@@ -195,7 +181,7 @@ func (c *Container) DetectRuntime() string {
 	// autodetect container runtime
 	if IsPodman() {
 		return "podman"
-	} else if IsDockerNative() || IsDockerToolbox() {
+	} else if IsDockerNative() {
 		return "docker"
 	}
 
@@ -210,7 +196,7 @@ func (c *Container) GetPullCommand(runtime string) (string, error) {
 	} else if runtime == "docker" {
 		return "docker pull " + c.image, nil
 	} else {
-		return "", errors.New("No supported container runtime found (podman, docker, docker toolbox)! [" + runtime + "]")
+		return "", errors.New("No supported container runtime found (podman, docker)! [" + runtime + "]")
 	}
 }
 
@@ -233,11 +219,6 @@ func (c *Container) GetRunCommand(runtime string) (string, error) {
 // StartContainer starts the Container
 func (c *Container) StartContainer() error {
 	var shellCommand bytes.Buffer
-
-	// - workaround for docker toolbox (will be deprecated and removed from envcli when WSL 2 is released)
-	if IsDockerToolbox() {
-		shellCommand.WriteString("docker-machine ssh envcli ")
-	}
 
 	// - command
 	runCmd, runCmdErr := c.GetRunCommand(c.DetectRuntime())

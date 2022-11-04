@@ -24,16 +24,6 @@ func IsDockerNative() bool {
 	return cihelper.IsExecutableInPath("docker")
 }
 
-// IsDockerToolbox returns true, if docker toolbox is used
-func IsDockerToolbox() bool {
-	path, err := exec.LookPath("docker-machine")
-	if err != nil || strings.Contains(path, "Docker Toolbox") == false {
-		return false
-	}
-
-	return true
-}
-
 /**
  * Fix escaping character
  */
