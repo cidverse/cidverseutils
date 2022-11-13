@@ -1,4 +1,4 @@
-package container_runtime
+package containerruntime
 
 import (
 	"bytes"
@@ -6,12 +6,12 @@ import (
 	"strconv"
 )
 
-// GetDockerCommand renders the command needed the run the container using docker
-func (c *Container) GetDockerCommand() string {
+// GetPodmanCommand renders the command needed the run the container using podman
+func (c *Container) GetPodmanCommand() string {
 	var shellCommand bytes.Buffer
 
 	// build command
-	shellCommand.WriteString("docker run --rm ")
+	shellCommand.WriteString("podman run --rm ")
 	// - terminal
 	setTerminalParameters(&shellCommand)
 	// - name
@@ -20,7 +20,7 @@ func (c *Container) GetDockerCommand() string {
 	}
 	// - entrypoint
 	if c.entrypoint != "unset" {
-		shellCommand.WriteString(fmt.Sprintf("--entrypoint %s ", strconv.Quote(c.entrypoint)))
+		shellCommand.WriteString(fmt.Sprintf("--entrypoint %s", strconv.Quote(c.entrypoint)))
 	} else {
 		shellCommand.WriteString("--entrypoint= ")
 	}
@@ -28,6 +28,7 @@ func (c *Container) GetDockerCommand() string {
 	setEnvironmentVariables(&shellCommand, &c.environment)
 	// - publish ports
 	publishPorts(&shellCommand, &c.containerPorts)
+	// - capabilities
 	// - capabilities / privileged
 	if c.privileged == true {
 		shellCommand.WriteString(fmt.Sprintf("--privileged "))

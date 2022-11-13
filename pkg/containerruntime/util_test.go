@@ -1,4 +1,4 @@
-package container_runtime
+package containerruntime
 
 import (
 	"testing"
