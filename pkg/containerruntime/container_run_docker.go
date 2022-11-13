@@ -19,10 +19,12 @@ func (c *Container) GetDockerCommand() string {
 		shellCommand.WriteString(fmt.Sprintf("--name %s ", strconv.Quote(c.name)))
 	}
 	// - entrypoint
-	if c.entrypoint != "unset" {
-		shellCommand.WriteString(fmt.Sprintf("--entrypoint %s ", strconv.Quote(c.entrypoint)))
-	} else {
-		shellCommand.WriteString("--entrypoint= ")
+	if c.entrypoint != nil {
+		if len(*c.entrypoint) > 0 {
+			shellCommand.WriteString(fmt.Sprintf("--entrypoint %s ", strconv.Quote(*c.entrypoint)))
+		} else {
+			shellCommand.WriteString("--entrypoint= ")
+		}
 	}
 	// - environment variables
 	setEnvironmentVariables(&shellCommand, &c.environment)

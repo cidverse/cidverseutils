@@ -16,7 +16,7 @@ type Container struct {
 	name             string
 	isRunning        bool
 	image            string
-	entrypoint       string
+	entrypoint       *string
 	commandShell     string
 	command          string
 	workingDirectory string
@@ -76,7 +76,7 @@ func (c *Container) AllowContainerRuntimeAcccess() {
 
 // SetEntrypoint overwrites the default entrypoint
 func (c *Container) SetEntrypoint(newEntrypoint string) {
-	c.entrypoint = newEntrypoint
+	c.entrypoint = &newEntrypoint
 }
 
 // SetCommandShell sets the command shell
