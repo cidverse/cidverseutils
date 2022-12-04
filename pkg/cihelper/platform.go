@@ -1,10 +1,11 @@
 package cihelper
 
 import (
-	"github.com/mattn/go-isatty"
 	"os"
 	"os/exec"
 	"strings"
+
+	"github.com/mattn/go-isatty"
 )
 
 // IsCIEnvironment checks if this process in running as part of a CI process
@@ -44,7 +45,7 @@ func IsInteractiveTerminal() bool {
 
 // ToUnixPath turns a windows path into a unix path
 func ToUnixPath(path string) string {
-	driveLetters := []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
+	driveLetters := []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
 	for _, element := range driveLetters {
 		if strings.HasPrefix(path, element+":\\") {
 			path = strings.Replace(path, element+":\\", "/"+element+"/", -1)
@@ -65,7 +66,7 @@ func ToUnixPathArgs(data string) string {
 	argList := strings.Split(data, " ")
 
 	for _, a := range argList {
-		driveLetters := []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"}
+		driveLetters := []string{"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"}
 		for _, element := range driveLetters {
 			if strings.HasPrefix(a, element+":\\") {
 				data = strings.Replace(data, element+":\\", "/"+element+"/", -1)
