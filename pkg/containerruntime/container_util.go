@@ -3,9 +3,10 @@ package containerruntime
 import (
 	"bytes"
 	"fmt"
-	"github.com/cidverse/cidverseutils/pkg/cihelper"
 	"strconv"
 	"strings"
+
+	"github.com/cidverse/cidverseutils/pkg/cihelper"
 )
 
 func setTerminalParameters(shellCommand *bytes.Buffer) {
@@ -13,17 +14,6 @@ func setTerminalParameters(shellCommand *bytes.Buffer) {
 		// env variable CI is set, we can't use --tty or --interactive here
 	} else if cihelper.IsInteractiveTerminal() {
 		shellCommand.WriteString("-ti ") // --tty --interactive
-	}
-}
-
-func volumeMount(shellCommand *bytes.Buffer, mounts *[]ContainerMount) {
-	for _, containerMount := range *mounts {
-		if containerMount.MountType == "directory" {
-			var mountSource = containerMount.Source
-			var mountTarget = containerMount.Target
-
-			shellCommand.WriteString(fmt.Sprintf("-v %s ", strconv.Quote(mountSource+":"+mountTarget)))
-		}
 	}
 }
 

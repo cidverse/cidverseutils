@@ -3,6 +3,8 @@ package containerruntime
 import (
 	"bytes"
 	"fmt"
+	"os"
+	"path/filepath"
 	"strconv"
 )
 
@@ -43,7 +45,21 @@ func (c *Container) GetPodmanCommand() string {
 		shellCommand.WriteString(fmt.Sprintf("--workdir %s ", strconv.Quote(c.workingDirectory)))
 	}
 	// - volume mounts
-	volumeMount(&shellCommand, &c.volumes)
+	for _, containerMount := range c.volumes {
+		if containerMount.MountType == "directory" {
+			var mountSource = containerMount.Source
+			var mountTarget = containerMount.Target
+
+			shellCommand.WriteString(fmt.Sprintf("-v %s ", strconv.Quote(mountSource+":"+mountTarget)))
+		} else if containerMount.MountType == "volume" {
+			var mountSource = containerMount.Source
+			var mountTarget = containerMount.Target
+			mountSourceDir := filepath.Join(os.TempDir(), "podman-volume", mountSource)
+			_ = os.MkdirAll(mountSourceDir, os.ModePerm)
+
+			shellCommand.WriteString(fmt.Sprintf("-v %s ", strconv.Quote(mountSourceDir+":"+mountTarget)))
+		}
+	}
 	// - userArgs
 	if len(c.userArgs) > 0 {
 		shellCommand.WriteString(c.userArgs + " ")
