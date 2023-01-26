@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/mattn/go-isatty v0.0.17
-	github.com/rs/zerolog v1.28.0
+	github.com/rs/zerolog v1.29.0
 	github.com/stretchr/testify v1.8.1
 	golang.org/x/mod v0.7.0
 )
