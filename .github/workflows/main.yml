@@ -29,10 +29,12 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: build
+      - name: info
         run: |
           echo "> project modules"
           cid module ls
+          echo "> catalog"
+          cid catalog list
           echo "> workflows"
           cid workflow ls
   # build
