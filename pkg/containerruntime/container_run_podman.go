@@ -50,7 +50,12 @@ func (c *Container) GetPodmanCommand() string {
 			var mountSource = containerMount.Source
 			var mountTarget = containerMount.Target
 
-			shellCommand.WriteString(fmt.Sprintf("-v %s ", strconv.Quote(mountSource+":"+mountTarget)))
+			suffix := ""
+			if containerMount.Mode == ReadMode {
+				suffix = ":ro"
+			}
+
+			shellCommand.WriteString(fmt.Sprintf("-v %q ", mountSource+":"+mountTarget+suffix))
 		} else if containerMount.MountType == "volume" {
 			var mountSource = containerMount.Source
 			var mountTarget = containerMount.Target

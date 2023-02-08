@@ -5,6 +5,7 @@ type ContainerMount struct {
 	MountType string
 	Source    string
 	Target    string
+	Mode      MountMode
 }
 
 // EnvironmentProperty holds environment variables
@@ -18,3 +19,10 @@ type ContainerPort struct {
 	Source int
 	Target int
 }
+
+type MountMode string
+
+const (
+	WriteMode MountMode = "write"
+	ReadMode  MountMode = "read"
+)

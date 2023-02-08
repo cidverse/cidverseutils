@@ -3,8 +3,9 @@ package output
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func PrintStruct(t *testing.T, result interface{}) {

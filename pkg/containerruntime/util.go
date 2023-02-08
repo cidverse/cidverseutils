@@ -2,12 +2,12 @@ package containerruntime
 
 import (
 	"fmt"
-	"github.com/cidverse/cidverseutils/pkg/cihelper"
-	"github.com/rs/zerolog/log"
 	"os"
 	"os/exec"
 	"runtime"
 	"strings"
+
+	"github.com/cidverse/cidverseutils/pkg/cihelper"
 )
 
 /**
@@ -54,16 +54,13 @@ func sanitizeCommand(commandShell string, command string) string {
  */
 func systemExec(command string) error {
 	// Run Command
-	log.Trace().Msg("systemExec: " + command)
 	if runtime.GOOS == "linux" {
 		cmd := exec.Command("/usr/bin/env", "sh", "-c", command)
 		cmd.Stdin = os.Stdin
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
-		log.Debug().Msg("Running Command: /usr/bin/env sh -c " + command)
 		err := cmd.Run()
 		if err != nil {
-			log.Fatal().Err(err).Msg("Failed to execute command")
 			return err
 		}
 	} else if runtime.GOOS == "windows" {
@@ -72,9 +69,7 @@ func systemExec(command string) error {
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
 		err := cmd.Run()
-		log.Debug().Msg("Running Command: powershell " + command)
 		if err != nil {
-			log.Fatal().Err(err).Msg("Failed to execute command")
 			return err
 		}
 	} else if runtime.GOOS == "darwin" {
@@ -82,10 +77,8 @@ func systemExec(command string) error {
 		cmd.Stdin = os.Stdin
 		cmd.Stdout = os.Stdout
 		cmd.Stderr = os.Stderr
-		log.Debug().Msg("Running Command: " + cmd.String())
 		err := cmd.Run()
 		if err != nil {
-			log.Fatal().Err(err).Msg("Failed to execute command")
 			return err
 		}
 	}

@@ -78,14 +78,30 @@ func TestFormat(t *testing.T) {
 }
 
 func TestCompare(t *testing.T) {
-	assert.Equal(t, 0, Compare("v1.2.3", "v1.2.3"))
-	assert.Equal(t, -1, Compare("v1.2.3", "v2.0.0"))
-	assert.Equal(t, 1, Compare("v1.6.0", "v1.2.3"))
-	assert.Equal(t, 0, Compare("v1.2.3+6123", "v1.2.3+6123"))
-	assert.Equal(t, 0, Compare("v1.2.3-rc.1", "v1.2.3-rc.1"))
-	assert.Equal(t, 0, Compare("v0.0.0", "v0.0.0"))
-	assert.Equal(t, -1, Compare("v0.0.0", "v0.0.1"))
-	assert.Equal(t, 1, Compare("v0.0.1", "v0.0.0"))
+	tests := []struct {
+		left     string
+		right    string
+		expected int
+		err      error
+	}{
+		{"v1.2.3", "v1.2.3", 0, nil},
+		{"v1.2.3", "v2.0.0", -1, nil},
+		{"v1.6.0", "v1.2.3", 1, nil},
+		{"v1.2.3+6123", "v1.2.3+6123", 0, nil},
+		{"v1.2.3-rc.1", "v1.2.3-rc.1", 0, nil},
+		{"v0.0.0", "v0.0.0", 0, nil},
+		{"v0.0.0", "v0.0.1", -1, nil},
+		{"v0.0.1", "v0.0.0", 1, nil},
+	}
+	for _, test := range tests {
+		got, err := Compare(test.left, test.right)
+		if got != test.expected {
+			t.Errorf("Compare(%q, %q) = %d, want %d", test.left, test.right, got, test.expected)
+		}
+		if err != nil && err.Error() != test.err.Error() {
+			t.Errorf("Compare(%q, %q) returned error %q, want %q", test.left, test.right, err, test.err)
+		}
+	}
 }
 
 func TestFulfillsConstraint(t *testing.T) {

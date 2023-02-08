@@ -1,9 +1,10 @@
 package cihelper
 
 import (
-	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestCiEnvironmentTrue(t *testing.T) {

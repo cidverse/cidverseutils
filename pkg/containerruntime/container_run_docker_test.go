@@ -2,11 +2,12 @@ package containerruntime
 
 import (
 	"fmt"
-	"github.com/cidverse/cidverseutils/pkg/cihelper"
-	"github.com/stretchr/testify/assert"
 	"os"
 	"strconv"
 	"testing"
+
+	"github.com/cidverse/cidverseutils/pkg/cihelper"
+	"github.com/stretchr/testify/assert"
 )
 
 func TestDockerSetParamsInteractive(t *testing.T) {
@@ -74,6 +75,14 @@ func TestDockerAddVolume(t *testing.T) {
 
 	containerCmd, _ := container.GetRunCommand("docker")
 	assert.Contains(t, containerCmd, "-v \"/root:/root\"", "mount not set correctly")
+}
+
+func TestDockerAddVolumeReadOnly(t *testing.T) {
+	container := Container{}
+	container.AddVolume(ContainerMount{MountType: "directory", Source: "/root", Target: "/root", Mode: ReadMode})
+
+	containerCmd, _ := container.GetRunCommand("podman")
+	assert.Contains(t, containerCmd, "-v \"/root:/root:ro\"", "mount not set correctly")
 }
 
 func TestDockerSetUserArgs(t *testing.T) {

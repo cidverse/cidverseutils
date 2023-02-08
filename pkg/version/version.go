@@ -6,7 +6,6 @@ import (
 	"fmt"
 
 	hashicorpVersion "github.com/hashicorp/go-version"
-	"github.com/rs/zerolog/log"
 )
 
 func HighestReleaseType(numbers []ReleaseType) ReleaseType {
@@ -59,20 +58,18 @@ func Format(input string) (string, error) {
 // - 1 if `left` version is newer than `right` version
 // Note: `Compare` only compares the major, minor, and patch version numbers.
 // It does not support comparison of build numbers or pre-release labels such as alpha, beta, etc.
-func Compare(left string, right string) int {
+func Compare(left string, right string) (int, error) {
 	leftVer, leftVerErr := hashicorpVersion.NewSemver(left)
 	if leftVerErr != nil {
-		log.Err(leftVerErr).Str("left", left).Str("right", right).Msg("failed to compare versions. left version is invalid")
-		return 0
+		return 0, fmt.Errorf("failed to compare versions. left version is invalid: %s", leftVerErr.Error())
 	}
 
 	rightVer, rightVerErr := hashicorpVersion.NewSemver(right)
 	if rightVerErr != nil {
-		log.Err(rightVerErr).Str("left", left).Str("right", right).Msg("failed to compare versions. right version is invalid")
-		return 0
+		return 0, fmt.Errorf("failed to compare versions. right version is invalid: %s", rightVerErr.Error())
 	}
 
-	return leftVer.Compare(rightVer)
+	return leftVer.Compare(rightVer), nil
 }
 
 // FulfillsConstraint checks if the given `version` fulfills the `constraint`.
@@ -80,8 +77,6 @@ func Compare(left string, right string) int {
 // `constraint` should be a string that follows the format described in the semver 2.0.0 specification.
 // Example constraint strings: ">=1.2.3", "^1.2.3", "2.0.0".
 func FulfillsConstraint(version string, constraint string) bool {
-	log.Trace().Str("version", version).Str("constraint", constraint).Msg("checking version constraint")
-
 	ver, vErr := hashicorpVersion.NewVersion(version)
 	if vErr != nil {
 		return false
@@ -90,7 +85,6 @@ func FulfillsConstraint(version string, constraint string) bool {
 	// Constraints example.
 	constraints, constraintsErr := hashicorpVersion.NewConstraint(constraint)
 	if constraintsErr != nil {
-		log.Debug().Str("version", version).Str("constraint", constraint).Msg("invalid version constraint")
 		return false
 	}
 	if constraints.Check(ver) {

@@ -3,12 +3,12 @@ package containerruntime
 import (
 	"bytes"
 	"errors"
-	"github.com/cidverse/cidverseutils/pkg/collection"
-	"github.com/rs/zerolog/log"
 	"os"
 	"runtime"
 	"strconv"
 	"strings"
+
+	"github.com/cidverse/cidverseutils/pkg/collection"
 )
 
 // Container provides all methods to interact with the container runtime
@@ -167,12 +167,7 @@ func (c *Container) AddAllEnvironmentVariables() {
 		// recent issue of 2009 about git bash / mingw setting invalid unix variables with `var(86)=...`
 		isInvalidName := strings.Contains(envName, "(") || strings.Contains(envName, ")")
 		if !isExcluded && !isInvalidName {
-			log.Debug().Msg("Added environment variable " + envName + " [" + envValue + "] from host!")
 			c.AddEnvironmentVariable(envName, envValue)
-		} else if !isExcluded {
-			log.Debug().Msg("Excluded env variable " + envName + " [" + envValue + "]  from host because of a invalid variable name.")
-		} else {
-			log.Debug().Msg("Excluded env variable " + envName + " [" + envValue + "]  from host based on the filter rule.")
 		}
 	}
 }
