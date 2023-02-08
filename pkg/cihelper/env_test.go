@@ -24,3 +24,25 @@ func TestConvertEnvMapToStringSlice(t *testing.T) {
 		}
 	}
 }
+
+func TestToEnvName(t *testing.T) {
+	tests := []struct {
+		input    string
+		expected string
+	}{
+		{"foo.bar", "FOO_BAR"},
+		{"foo", "FOO"},
+		{"FOO.BAR", "FOO_BAR"},
+		{"", ""},
+		{"FOOBAR", "FOOBAR"},
+		{"foo-bar", "FOO_BAR"},
+		{"foo_bar", "FOO_BAR"},
+	}
+
+	for _, test := range tests {
+		result := ToEnvName(test.input)
+		if result != test.expected {
+			t.Errorf("Expected %s, but got %s", test.expected, result)
+		}
+	}
+}
