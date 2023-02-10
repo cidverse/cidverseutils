@@ -20,7 +20,6 @@ jobs:
       cid-workflow: main
       cid-version: latest
     secrets:
-      QODANA_TOKEN: ${{ secrets.QODANA_TOKEN }}
       SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
       SONAR_ORGANIZATION: ${{ secrets.SONAR_ORGANIZATION }}
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
