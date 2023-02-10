@@ -2,6 +2,7 @@ package filesystem
 
 import (
 	"errors"
+	"io"
 	"os"
 	"path/filepath"
 	"strings"
@@ -152,6 +153,30 @@ func FileExists(filename string) bool {
 	}
 
 	return !info.IsDir()
+}
+
+// CopyFile copies a file
+func CopyFile(src, dst string) error {
+	in, err := os.Open(src)
+	if err != nil {
+		return err
+	}
+	defer in.Close()
+	out, err := os.Create(dst)
+	if err != nil {
+		return os.ErrDeadlineExceeded
+	}
+	defer func() {
+		cerr := out.Close()
+		if err == nil {
+			err = cerr
+		}
+	}()
+	if _, err = io.Copy(out, in); err != nil {
+		return err
+	}
+	err = out.Sync()
+	return nil
 }
 
 // DirectoryExists checks if the dir exists
