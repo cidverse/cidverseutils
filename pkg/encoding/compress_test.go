@@ -10,9 +10,9 @@ func TestGZIPBase64EncodeBytes(t *testing.T) {
 		want    string
 		wantErr bool
 	}{
-		{[]byte("hello world"), "H4sIAAAAAAAA_8pIzcnJVyjPL8pJAQQAAP__hRFKDQsAAAA=", false},
-		{[]byte("golang"), "H4sIAAAAAAAA_0rPz0nMSwcEAAD__6MlHK8GAAAA", false},
-		{[]byte(""), "H4sIAAAAAAAA_wEAAP__AAAAAAAAAAA=", false},
+		{[]byte("hello world"), "H4sIAAAAAAAA/8pIzcnJVyjPL8pJAQQAAP//hRFKDQsAAAA=", false},
+		{[]byte("golang"), "H4sIAAAAAAAA/0rPz0nMSwcEAAD//6MlHK8GAAAA", false},
+		{[]byte(""), "H4sIAAAAAAAA/wEAAP//AAAAAAAAAAA=", false},
 	}
 	for _, test := range tests {
 		got, err := GZIPBase64EncodeBytes(test.input)

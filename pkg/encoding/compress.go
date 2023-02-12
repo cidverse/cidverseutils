@@ -17,5 +17,5 @@ func GZIPBase64EncodeBytes(input []byte) (string, error) {
 	if err := gz.Close(); err != nil {
 		return "", fmt.Errorf("failed to gzip input")
 	}
-	return base64.URLEncoding.EncodeToString(sarifGzipped.Bytes()), nil
+	return base64.StdEncoding.EncodeToString(sarifGzipped.Bytes()), nil
 }
