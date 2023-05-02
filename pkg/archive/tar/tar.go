@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 )
 
-// TARCreate creates a tar archive of the directory at the given path.
-func TARCreate(inputDirectory string, outputFile string) error {
+// Create creates a tar archive of the directory at the given path.
+func Create(inputDirectory string, outputFile string) error {
 	// Create a new tar file to write to
 	newTarFile, err := os.Create(outputFile)
 	if err != nil {
@@ -59,8 +59,8 @@ func TARCreate(inputDirectory string, outputFile string) error {
 	})
 }
 
-// TARExtract extracts a tar archive at the given path into the given directory.
-func TARExtract(archiveFile string, outputDirectory string) error {
+// Extract extracts a tar archive at the given path into the given directory.
+func Extract(archiveFile string, outputDirectory string) error {
 	// Open the tar archive for reading
 	tarFile, err := os.Open(archiveFile)
 	if err != nil {

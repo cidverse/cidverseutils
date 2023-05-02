@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestTARCreateAndExtract(t *testing.T) {
+func TestCreateAndExtract(t *testing.T) {
 	// Create a temporary directory to use as the input directory
 	inputDir, err := os.MkdirTemp("", "test-input")
 	if err != nil {
@@ -29,12 +29,12 @@ func TestTARCreateAndExtract(t *testing.T) {
 
 	// Create a tar archive of the input directory
 	archiveFile := filepath.Join(outputDir, "test.tar")
-	if err := TARCreate(inputDir, archiveFile); err != nil {
+	if err := Create(inputDir, archiveFile); err != nil {
 		t.Fatal(err)
 	}
 
 	// Extract the tar archive into the output directory
-	if err := TARExtract(archiveFile, outputDir); err != nil {
+	if err := Extract(archiveFile, outputDir); err != nil {
 		t.Fatal(err)
 	}
 
