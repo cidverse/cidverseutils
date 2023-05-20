@@ -8,50 +8,61 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/cidverse/cidverseutils/pkg/cihelper"
 	"github.com/cidverse/cidverseutils/pkg/collection"
 )
 
 // Container provides all methods to interact with the container runtime
 type Container struct {
-	name             string
-	isRunning        bool
-	image            string
-	entrypoint       *string
-	commandShell     string
-	command          string
-	workingDirectory string
-	volumes          []ContainerMount
-	environment      []EnvironmentProperty
-	containerPorts   []ContainerPort
-	capabilities     []string
-	userArgs         string
-	privileged       bool
+	Name             string
+	Image            string
+	Entrypoint       *string
+	CommandShell     string
+	Command          string
+	WorkingDirectory string
+	Volumes          []ContainerMount
+	Environment      []EnvironmentProperty
+	ContainerPorts   []ContainerPort
+	Capabilities     []string
+	User             string
+	UserArgs         string
+	Privileged       bool
+	Interactive      bool
+	TTY              bool
 }
 
-// SetName sets a new name for the container
-func (c *Container) SetName(newName string) {
-	c.name = newName
+func Create() Container {
+	return Container{
+		Name:             "",
+		Image:            "",
+		Entrypoint:       nil,
+		CommandShell:     "",
+		Command:          "",
+		WorkingDirectory: "",
+		Volumes:          []ContainerMount{},
+		Environment:      []EnvironmentProperty{},
+		ContainerPorts:   []ContainerPort{},
+		Capabilities:     []string{},
+		User:             "",
+		UserArgs:         "",
+		Privileged:       false,
+		Interactive:      false,
+		TTY:              false,
+	}
 }
 
-// GetName gets the container name
-func (c *Container) GetName() string {
-	return c.name
-}
-
-// SetImage sets the container image
-func (c *Container) SetImage(newImage string) {
-	c.image = newImage
+// AutoTerminalParameters automatically sets the terminal parameters
+func (c *Container) AutoTerminalParameters() {
+	if cihelper.IsInteractiveTerminal() && !cihelper.IsCIEnvironment() {
+		c.Interactive = true
+		c.TTY = true
+	}
 }
 
 // AddVolume mounts a directory into a container
 func (c *Container) AddVolume(mount ContainerMount) {
 	mount.Target = ToUnixPath(mount.Target)
-	c.volumes = append(c.volumes, mount)
-}
-
-// SetPrivileged toggels the privileged flag
-func (c *Container) SetPrivileged(privileged bool) {
-	c.privileged = privileged
+	c.Volumes = append(c.Volumes, mount)
 }
 
 // AddCacheMount adds a cache mount to the container
@@ -74,36 +85,6 @@ func (c *Container) AllowContainerRuntimeAcccess() {
 	c.AddVolume(ContainerMount{MountType: "directory", Source: socketPath, Target: "/var/run/docker.sock"})
 }
 
-// SetEntrypoint overwrites the default entrypoint
-func (c *Container) SetEntrypoint(newEntrypoint string) {
-	c.entrypoint = &newEntrypoint
-}
-
-// SetCommandShell sets the command shell
-func (c *Container) SetCommandShell(newCommandShell string) {
-	c.commandShell = newCommandShell
-}
-
-// SetCommand sets the container command
-func (c *Container) SetCommand(newCommand string) {
-	c.command = newCommand
-}
-
-// SetWorkingDirectory sets the working directory
-func (c *Container) SetWorkingDirectory(newWorkingDirectory string) {
-	c.workingDirectory = newWorkingDirectory
-}
-
-// AddContainerPort publishes a port
-func (c *Container) AddContainerPort(port ContainerPort) {
-	c.containerPorts = append(c.containerPorts, port)
-}
-
-// AddCapability adds a capability to the container
-func (c *Container) AddCapability(capability string) {
-	c.capabilities = append(c.capabilities, capability)
-}
-
 // AddContainerPorts adds multiple published ports
 func (c *Container) AddContainerPorts(ports []string) {
 	for _, p := range ports {
@@ -111,13 +92,13 @@ func (c *Container) AddContainerPorts(ports []string) {
 		sourcePort, _ := strconv.Atoi(pair[0])
 		targetPort, _ := strconv.Atoi(pair[1])
 
-		c.AddContainerPort(ContainerPort{Source: sourcePort, Target: targetPort})
+		c.ContainerPorts = append(c.ContainerPorts, ContainerPort{Source: sourcePort, Target: targetPort})
 	}
 }
 
 // AddEnvironmentVariable adds a environment variable
 func (c *Container) AddEnvironmentVariable(name string, value string) {
-	c.environment = append(c.environment, EnvironmentProperty{Name: name, Value: value})
+	c.Environment = append(c.Environment, EnvironmentProperty{Name: name, Value: value})
 }
 
 // AddEnvironmentVariables adds multiple environment variables
@@ -172,11 +153,6 @@ func (c *Container) AddAllEnvironmentVariables() {
 	}
 }
 
-// SetUserArgs allows the user to pass custom arguments to the container run command, for special cases in ci envs with service links / or similar
-func (c *Container) SetUserArgs(newArgs string) {
-	c.userArgs = newArgs
-}
-
 // DetectRuntime returns the first available container runtime
 func (c *Container) DetectRuntime() string {
 	// autodetect container runtime
@@ -193,9 +169,9 @@ func (c *Container) DetectRuntime() string {
 func (c *Container) GetPullCommand(runtime string) (string, error) {
 	// autodetect container runtime
 	if runtime == "podman" {
-		return "podman pull " + c.image, nil
+		return "podman pull " + c.Image, nil
 	} else if runtime == "docker" {
-		return "docker pull " + c.image, nil
+		return "docker pull " + c.Image, nil
 	} else {
 		return "", errors.New("No supported container runtime found (podman, docker)! [" + runtime + "]")
 	}

@@ -12,38 +12,51 @@ func (c *Container) GetDockerCommand() string {
 
 	// build command
 	shellCommand.WriteString("docker run --rm ")
-	// - terminal
-	setTerminalParameters(&shellCommand)
+	// - interactive, tty
+	if c.Interactive {
+		shellCommand.WriteString("-i ")
+	}
+	if c.TTY {
+		shellCommand.WriteString("-t ")
+	}
 	// - name
-	if len(c.name) > 0 {
-		shellCommand.WriteString(fmt.Sprintf("--name %s ", strconv.Quote(c.name)))
+	if c.Name != "" {
+		shellCommand.WriteString(fmt.Sprintf("--name %s ", strconv.Quote(c.Name)))
+	}
+	// - user
+	if c.User != "" {
+		shellCommand.WriteString(fmt.Sprintf("-u %s ", strconv.Quote(c.User)))
 	}
 	// - entrypoint
-	if c.entrypoint != nil {
-		if len(*c.entrypoint) > 0 {
-			shellCommand.WriteString(fmt.Sprintf("--entrypoint %s ", strconv.Quote(*c.entrypoint)))
+	if c.Entrypoint != nil {
+		if len(*c.Entrypoint) > 0 {
+			shellCommand.WriteString(fmt.Sprintf("--entrypoint %s ", strconv.Quote(*c.Entrypoint)))
 		} else {
 			shellCommand.WriteString("--entrypoint= ")
 		}
 	}
 	// - environment variables
-	setEnvironmentVariables(&shellCommand, &c.environment)
+	for _, envVariable := range c.Environment {
+		shellCommand.WriteString(fmt.Sprintf("-e %s=%s ", envVariable.Name, strconv.Quote(envVariable.Value)))
+	}
 	// - publish ports
-	publishPorts(&shellCommand, &c.containerPorts)
+	for _, publishVariable := range c.ContainerPorts {
+		shellCommand.WriteString(fmt.Sprintf("-p %d:%d ", publishVariable.Source, publishVariable.Target))
+	}
 	// - capabilities / privileged
-	if c.privileged == true {
+	if c.Privileged == true {
 		shellCommand.WriteString(fmt.Sprintf("--privileged "))
 	} else {
-		for _, cap := range c.capabilities {
+		for _, cap := range c.Capabilities {
 			shellCommand.WriteString(fmt.Sprintf("--cap-add %s ", strconv.Quote(cap)))
 		}
 	}
 	// - set working directory
-	if len(c.workingDirectory) > 0 {
-		shellCommand.WriteString(fmt.Sprintf("--workdir %s ", strconv.Quote(c.workingDirectory)))
+	if len(c.WorkingDirectory) > 0 {
+		shellCommand.WriteString(fmt.Sprintf("-w %s ", strconv.Quote(c.WorkingDirectory)))
 	}
 	// - volume mounts
-	for _, containerMount := range c.volumes {
+	for _, containerMount := range c.Volumes {
 		if containerMount.MountType == "directory" || containerMount.MountType == "volume" {
 			var mountSource = containerMount.Source
 			var mountTarget = containerMount.Target
@@ -57,13 +70,13 @@ func (c *Container) GetDockerCommand() string {
 		}
 	}
 	// - userArgs
-	if len(c.userArgs) > 0 {
-		shellCommand.WriteString(c.userArgs + " ")
+	if c.UserArgs != "" {
+		shellCommand.WriteString(c.UserArgs + " ")
 	}
 	// - image
-	shellCommand.WriteString(fmt.Sprintf("%s ", c.image))
-	// - command to run inside of the container
-	shellCommand.WriteString(sanitizeCommand(c.commandShell, c.command))
+	shellCommand.WriteString(fmt.Sprintf("%s ", c.Image))
+	// - command to run inside the container
+	shellCommand.WriteString(sanitizeCommand(c.CommandShell, c.Command))
 
 	return shellCommand.String()
 }

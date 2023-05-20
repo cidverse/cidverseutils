@@ -1,33 +1,8 @@
 package containerruntime
 
 import (
-	"bytes"
-	"fmt"
-	"strconv"
 	"strings"
-
-	"github.com/cidverse/cidverseutils/pkg/cihelper"
 )
-
-func setTerminalParameters(shellCommand *bytes.Buffer) {
-	if cihelper.IsCIEnvironment() {
-		// env variable CI is set, we can't use --tty or --interactive here
-	} else if cihelper.IsInteractiveTerminal() {
-		shellCommand.WriteString("-ti ") // --tty --interactive
-	}
-}
-
-func publishPorts(shellCommand *bytes.Buffer, publish *[]ContainerPort) {
-	for _, publishVariable := range *publish {
-		shellCommand.WriteString(fmt.Sprintf("-p %d:%d ", publishVariable.Source, publishVariable.Target))
-	}
-}
-
-func setEnvironmentVariables(shellCommand *bytes.Buffer, environment *[]EnvironmentProperty) {
-	for _, envVariable := range *environment {
-		shellCommand.WriteString(fmt.Sprintf("-e %s=%s ", envVariable.Name, strconv.Quote(envVariable.Value)))
-	}
-}
 
 // ToUnixPath turns a windows path into a unix path
 func ToUnixPath(path string) string {

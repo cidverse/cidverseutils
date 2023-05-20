@@ -30,16 +30,19 @@ func TestPodmanSetParamsCI(t *testing.T) {
 }
 
 func TestPodmanSetName(t *testing.T) {
-	container := Container{}
-	container.SetName("testCase")
+	container := Container{
+		Name: "testCase",
+	}
 
 	containerCmd, _ := container.GetRunCommand("podman")
 	assert.Contains(t, containerCmd, "--name \"testCase\"", "name not set correctly")
 }
 
 func TestPodmanSetEntrypoint(t *testing.T) {
-	container := Container{}
-	container.SetEntrypoint("/bin/test")
+	entrypoint := "/bin/test"
+	container := Container{
+		Entrypoint: &entrypoint,
+	}
 
 	containerCmd, _ := container.GetRunCommand("podman")
 	assert.Contains(t, containerCmd, "--entrypoint \"/bin/test\"", "entrypoint not set correctly")
@@ -54,19 +57,26 @@ func TestPodmanSetEnvironment(t *testing.T) {
 }
 
 func TestPodmanPublishPort(t *testing.T) {
-	container := Container{}
-	container.AddContainerPort(ContainerPort{Source: 80, Target: 80})
+	container := Container{
+		ContainerPorts: []ContainerPort{
+			{
+				Source: 80,
+				Target: 80,
+			},
+		},
+	}
 
 	containerCmd, _ := container.GetRunCommand("podman")
 	assert.Contains(t, containerCmd, fmt.Sprintf("-p %d:%d", 80, 80), "publish port not set correctly")
 }
 
 func TestPodmanSetWorkingDirectory(t *testing.T) {
-	container := Container{}
-	container.SetWorkingDirectory("/home/app")
+	container := Container{
+		WorkingDirectory: "/home/app",
+	}
 
 	containerCmd, _ := container.GetRunCommand("podman")
-	assert.Contains(t, containerCmd, fmt.Sprintf("--workdir %s", strconv.Quote("/home/app")), "workdir not set correctly")
+	assert.Contains(t, containerCmd, fmt.Sprintf("-w %s", strconv.Quote("/home/app")), "workdir not set correctly")
 }
 
 func TestPodmanAddVolume(t *testing.T) {
@@ -86,25 +96,28 @@ func TestPodmanAddVolumeReadOnly(t *testing.T) {
 }
 
 func TestPodmanSetUserArgs(t *testing.T) {
-	container := Container{}
-	container.SetUserArgs("--link hello:world")
+	container := Container{
+		UserArgs: "--link hello:world",
+	}
 
 	containerCmd, _ := container.GetRunCommand("podman")
 	assert.Contains(t, containerCmd, "--link hello:world", "user args nto set correctly")
 }
 
 func TestPodmanSetImage(t *testing.T) {
-	container := Container{}
-	container.SetImage("alpine:latest")
+	container := Container{
+		Image: "alpine:latest",
+	}
 
 	containerCmd, _ := container.GetRunCommand("podman")
 	assert.Contains(t, containerCmd, "alpine:latest", "image not set correctly")
 }
 
 func TestPodmanSetCommand(t *testing.T) {
-	container := Container{}
-	container.SetCommandShell("sh")
-	container.SetCommand("printenv")
+	container := Container{
+		CommandShell: "sh",
+		Command:      "printenv",
+	}
 
 	containerCmd, _ := container.GetRunCommand("podman")
 	assert.Contains(t, containerCmd, "\"/usr/bin/env\" \"sh\" \"-c\" \"printenv\"", "container command invalid")
