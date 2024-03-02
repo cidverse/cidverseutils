@@ -5,7 +5,7 @@ go 1.21
 require (
 	github.com/hashicorp/go-version v1.6.0
 	github.com/mattn/go-isatty v0.0.20
-	github.com/stretchr/testify v1.8.4
+	github.com/stretchr/testify v1.9.0
 )
 
 require (
