@@ -9,13 +9,13 @@ import (
 )
 
 func HighestReleaseType(numbers []ReleaseType) ReleaseType {
-	max := numbers[0]
+	highestType := numbers[0]
 	for _, value := range numbers {
-		if value > max {
-			max = value
+		if value > highestType {
+			highestType = value
 		}
 	}
-	return max
+	return highestType
 }
 
 // IsValidSemver checks that the given input is a valid semver version

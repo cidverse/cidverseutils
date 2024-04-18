@@ -49,8 +49,8 @@ func (c *Container) GetPodmanCommand() string {
 	if c.Privileged == true {
 		shellCommand.WriteString(fmt.Sprintf("--privileged "))
 	} else {
-		for _, cap := range c.Capabilities {
-			shellCommand.WriteString(fmt.Sprintf("--cap-add %s ", strconv.Quote(cap)))
+		for _, capability := range c.Capabilities {
+			shellCommand.WriteString(fmt.Sprintf("--cap-add %s ", strconv.Quote(capability)))
 		}
 	}
 	// - set working directory

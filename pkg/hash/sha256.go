@@ -1,4 +1,4 @@
-package encoding
+package hash
 
 import (
 	"crypto/sha256"
@@ -6,7 +6,7 @@ import (
 	"io"
 )
 
-// SHA256Hash returns a string representation of the SHA256 hash
+// SHA256Hash returns a SHA256 hash
 func SHA256Hash(r io.Reader) (string, error) {
 	hashFunc := sha256.New()
 	if _, err := io.Copy(hashFunc, r); err != nil {
