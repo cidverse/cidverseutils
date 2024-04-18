@@ -1,4 +1,4 @@
-package zip
+package archive
 
 import (
 	"os"
@@ -6,7 +6,7 @@ import (
 	"testing"
 )
 
-func TestCreateAndExtract(t *testing.T) {
+func TestZIPCreateAndExtract(t *testing.T) {
 	// Create a temporary directory to use as the input directory
 	inputDir, err := os.MkdirTemp("", "test-input")
 	if err != nil {
@@ -29,12 +29,12 @@ func TestCreateAndExtract(t *testing.T) {
 
 	// Create a test zip archive
 	archiveFile := filepath.Join(outputDir, "test.zip")
-	if err := Create(inputDir, archiveFile); err != nil {
+	if err := ZIPCreate(inputDir, archiveFile); err != nil {
 		t.Fatal(err)
 	}
 
 	// Extract the test zip archive
-	if err := Extract(archiveFile, outputDir); err != nil {
+	if err := ZIPExtract(archiveFile, outputDir); err != nil {
 		t.Fatal(err)
 	}
 

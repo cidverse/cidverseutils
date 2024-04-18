@@ -1,4 +1,4 @@
-package zip
+package archive
 
 import (
 	"archive/zip"
@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 )
 
-// Create creates a zip archive of the directory at the given path.
-func Create(inputDirectory string, outputFile string) error {
+// ZIPCreate creates a zip archive of the directory at the given path.
+func ZIPCreate(inputDirectory string, outputFile string) error {
 	// Create a new zip file to write to
 	newZipFile, err := os.Create(outputFile)
 	if err != nil {
@@ -62,8 +62,8 @@ func Create(inputDirectory string, outputFile string) error {
 	})
 }
 
-// Extract unzips the zip archive at the given path into the given directory.
-func Extract(archiveFile string, outputDirectory string) error {
+// ZIPExtract unzips the zip archive at the given path into the given directory.
+func ZIPExtract(archiveFile string, outputDirectory string) error {
 	// Open the zip archive for reading
 	zipReader, err := zip.OpenReader(archiveFile)
 	if err != nil {
@@ -72,7 +72,7 @@ func Extract(archiveFile string, outputDirectory string) error {
 	defer zipReader.Close()
 
 	// Create the directory to extract files into if it doesn't exist
-	if err := os.MkdirAll(outputDirectory, os.ModePerm); err != nil {
+	if err = os.MkdirAll(outputDirectory, os.ModePerm); err != nil {
 		return err
 	}
 
@@ -83,12 +83,12 @@ func Extract(archiveFile string, outputDirectory string) error {
 
 		// Create any necessary directories in the destination path
 		if file.FileInfo().IsDir() {
-			if err := os.MkdirAll(destPath, os.ModePerm); err != nil {
+			if err = os.MkdirAll(destPath, os.ModePerm); err != nil {
 				return err
 			}
 			continue
 		} else {
-			if err := os.MkdirAll(filepath.Dir(destPath), os.ModePerm); err != nil {
+			if err = os.MkdirAll(filepath.Dir(destPath), os.ModePerm); err != nil {
 				return err
 			}
 		}
