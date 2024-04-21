@@ -1,3 +1,3 @@
-module github.com/cidverse/cidverseutils/archive
+module github.com/cidverse/cidverseutils/compress
 
 go 1.22
