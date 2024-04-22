@@ -1,4 +1,4 @@
-package cihelper
+package ci
 
 import (
 	"fmt"
