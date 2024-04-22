@@ -7,21 +7,17 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/cidverse/cidverseutils/pkg/cihelper"
+	ciexec "github.com/cidverse/cidverseutils/exec"
 )
 
-/**
- * Detect Podman
- */
+// IsPodman checks if podman is available in the PATH
 func IsPodman() bool {
-	return cihelper.IsExecutableInPath("podman")
+	return ciexec.InPath("podman")
 }
 
-/**
- * Detect Docker native
- */
+// IsDockerNative checks if docker is available in the PATH
 func IsDockerNative() bool {
-	return cihelper.IsExecutableInPath("docker")
+	return ciexec.InPath("docker")
 }
 
 /**

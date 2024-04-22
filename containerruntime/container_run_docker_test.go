@@ -6,12 +6,12 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/cidverse/cidverseutils/pkg/cihelper"
+	"github.com/cidverse/cidverseutils/exec"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestDockerSetParamsInteractive(t *testing.T) {
-	if !cihelper.IsInteractiveTerminal() {
+	if !exec.IsInteractiveTerminal() {
 		return
 	}
 	container := Container{}

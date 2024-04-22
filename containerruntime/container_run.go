@@ -5,11 +5,12 @@ import (
 	"errors"
 	"os"
 	"runtime"
+	"slices"
 	"strconv"
 	"strings"
 
-	"github.com/cidverse/cidverseutils/pkg/cihelper"
-	"github.com/cidverse/cidverseutils/pkg/collection"
+	"github.com/cidverse/cidverseutils/ci"
+	"github.com/cidverse/cidverseutils/exec"
 )
 
 // Container provides all methods to interact with the container runtime
@@ -53,7 +54,7 @@ func Create() Container {
 
 // AutoTerminalParameters automatically sets the terminal parameters
 func (c *Container) AutoTerminalParameters() {
-	if cihelper.IsInteractiveTerminal() && !cihelper.IsCIEnvironment() {
+	if exec.IsInteractiveTerminal() && !ci.IsCI() {
 		c.Interactive = true
 		c.TTY = true
 	}
@@ -144,7 +145,7 @@ func (c *Container) AddAllEnvironmentVariables() {
 			"HTTP_PROXY",
 			"HTTPS_PROXY",
 		}
-		isExcluded, _ := collection.InArray(strings.ToUpper(envName), systemVars)
+		isExcluded := slices.Contains(systemVars, strings.ToUpper(envName))
 		// recent issue of 2009 about git bash / mingw setting invalid unix variables with `var(86)=...`
 		isInvalidName := strings.Contains(envName, "(") || strings.Contains(envName, ")")
 		if !isExcluded && !isInvalidName {
