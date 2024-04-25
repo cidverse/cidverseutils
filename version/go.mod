@@ -1,6 +1,6 @@
 module github.com/cidverse/cidverseutils/version
 
-go 1.22
+go 1.21
 
 require (
 	github.com/hashicorp/go-version v1.6.0

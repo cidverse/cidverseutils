@@ -1,6 +1,6 @@
 module github.com/cidverse/cidverseutils/containerruntime
 
-go 1.22
+go 1.21
 
 require (
 	github.com/cidverse/cidverseutils/ci v0.0.0-20240422221402-488260328200
