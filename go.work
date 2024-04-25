@@ -1,0 +1,12 @@
+go 1.21
+
+use (
+	./ci
+	./compress
+	./containerruntime
+	./exec
+	./filesystem
+	./hash
+	./network
+	./version
+)
