@@ -5,8 +5,8 @@ go 1.22
 toolchain go1.22.2
 
 require (
-	github.com/cidverse/cidverseutils/ci v0.0.0-20240425200220-458a94f4e059
-	github.com/cidverse/cidverseutils/exec v0.0.0-20240425200220-458a94f4e059
+	github.com/cidverse/cidverseutils/ci v0.0.0-20240425201231-2b9542ff69bc
+	github.com/cidverse/cidverseutils/exec v0.0.0-20240425201231-2b9542ff69bc
 	github.com/stretchr/testify v1.9.0
 )
 
