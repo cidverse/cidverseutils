@@ -1,12 +1,10 @@
 module github.com/cidverse/cidverseutils/containerruntime
 
-go 1.22
-
-toolchain go1.22.2
+go 1.21
 
 require (
-	github.com/cidverse/cidverseutils/ci v0.0.0-20240425201231-2b9542ff69bc
-	github.com/cidverse/cidverseutils/exec v0.0.0-20240425201231-2b9542ff69bc
+	github.com/cidverse/cidverseutils/ci v0.0.0-20240426222324-77d44ee3ff60
+	github.com/cidverse/cidverseutils/exec v0.0.0-20240426222324-77d44ee3ff60
 	github.com/stretchr/testify v1.9.0
 )
 
