@@ -4,5 +4,12 @@
     "github>cidverse/renovate-config:default",
     "github>cidverse/renovate-config:assignee"
   ],
-  "baseBranches": ["main"]
+  "baseBranches": ["main"],
+  "packageRules": [
+    {
+      "matchManagers": ["gomod"],
+      "matchPackagePatterns": ["^github\\.com/cidverse/cidverseutils"],
+      "enabled": false
+    }
+  ]
 }
