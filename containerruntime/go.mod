@@ -3,7 +3,7 @@ module github.com/cidverse/cidverseutils/containerruntime
 go 1.21
 
 require (
-	github.com/cidverse/cidverseutils/ci v0.0.0-20240426222324-77d44ee3ff60
+	github.com/cidverse/cidverseutils/ci v0.0.0-20240426222640-9d7a9ba21c1b
 	github.com/cidverse/cidverseutils/exec v0.0.0-20240426222324-77d44ee3ff60
 	github.com/stretchr/testify v1.9.0
 )
