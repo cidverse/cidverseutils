@@ -1,7 +1,7 @@
 github.com/cidverse/cidverseutils/ci v0.0.0-20240426222324-77d44ee3ff60 h1:LeOQFz2Z0vapIqGtM+3iDxzQA8sw93gDj9PrLOX5E+c=
 github.com/cidverse/cidverseutils/ci v0.0.0-20240426222324-77d44ee3ff60/go.mod h1:uOMGB2Kh/0HA936tlnzgBvrxv4hmXYeSbJxP383nHKU=
-github.com/cidverse/cidverseutils/exec v0.0.0-20240426222324-77d44ee3ff60 h1:sLFPO2VLM+0K84pqlJXO/syxlkFQpMcF2TaIdxbVG0Y=
-github.com/cidverse/cidverseutils/exec v0.0.0-20240426222324-77d44ee3ff60/go.mod h1:DHW1LndctiozzTrK8lgBtVFjdc3ynZviR5nEACmnB5E=
+github.com/cidverse/cidverseutils/exec v0.0.0-20240426222640-9d7a9ba21c1b h1:PTnyHTjInq2f3z1My+pr4uoCY6wAybWIGRmBJ2+YEDA=
+github.com/cidverse/cidverseutils/exec v0.0.0-20240426222640-9d7a9ba21c1b/go.mod h1:DHW1LndctiozzTrK8lgBtVFjdc3ynZviR5nEACmnB5E=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/mattn/go-isatty v0.0.20 h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWEY=
