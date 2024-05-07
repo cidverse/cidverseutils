@@ -3,12 +3,13 @@ go 1.22
 toolchain go1.22.2
 
 use (
-	./ci
-	./compress
-	./containerruntime
-	./exec
-	./filesystem
-	./hash
-	./network
-	./version
+	ci
+	compress
+	containerruntime
+	exec
+	filesystem
+	hash
+	network
+	version
+	redact
 )

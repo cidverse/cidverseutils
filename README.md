@@ -9,7 +9,6 @@ Some modules require external dependencies that are not needed in all projects, 
 ## Installation
 
 ```bash
-go get -u github.com/cidverse/cidverseutils/archive@main
 go get -u github.com/cidverse/cidverseutils/ci@main
 go get -u github.com/cidverse/cidverseutils/compress@main
 go get -u github.com/cidverse/cidverseutils/containerruntime@main
@@ -18,6 +17,7 @@ go get -u github.com/cidverse/cidverseutils/network@main
 go get -u github.com/cidverse/cidverseutils/hash@main
 go get -u github.com/cidverse/cidverseutils/version@main
 go get -u github.com/cidverse/cidverseutils/exec@main
+go get -u github.com/cidverse/cidverseutils/redact@main
 ```
 
 ## License
