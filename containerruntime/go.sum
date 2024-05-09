@@ -1,7 +1,7 @@
-github.com/cidverse/cidverseutils/ci v0.0.0-20240426222324-77d44ee3ff60 h1:LeOQFz2Z0vapIqGtM+3iDxzQA8sw93gDj9PrLOX5E+c=
-github.com/cidverse/cidverseutils/ci v0.0.0-20240426222324-77d44ee3ff60/go.mod h1:uOMGB2Kh/0HA936tlnzgBvrxv4hmXYeSbJxP383nHKU=
-github.com/cidverse/cidverseutils/exec v0.0.0-20240426222324-77d44ee3ff60 h1:sLFPO2VLM+0K84pqlJXO/syxlkFQpMcF2TaIdxbVG0Y=
-github.com/cidverse/cidverseutils/exec v0.0.0-20240426222324-77d44ee3ff60/go.mod h1:DHW1LndctiozzTrK8lgBtVFjdc3ynZviR5nEACmnB5E=
+github.com/cidverse/cidverseutils/ci v0.0.0-20240507203508-adb806ff2095 h1:uuxIFyc/qPaDT4NyEVL+PFDP5xjY7OBrI0DcpGeQjcY=
+github.com/cidverse/cidverseutils/ci v0.0.0-20240507203508-adb806ff2095/go.mod h1:uOMGB2Kh/0HA936tlnzgBvrxv4hmXYeSbJxP383nHKU=
+github.com/cidverse/cidverseutils/exec v0.0.0-20240507203508-adb806ff2095 h1:CdAAS+hm8tq02u0O7W3fqrQys0Ylc6sEt6/y5DjmJaY=
+github.com/cidverse/cidverseutils/exec v0.0.0-20240507203508-adb806ff2095/go.mod h1:DHW1LndctiozzTrK8lgBtVFjdc3ynZviR5nEACmnB5E=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/mattn/go-isatty v0.0.20 h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWEY=
@@ -11,8 +11,8 @@ github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZN
 github.com/stretchr/testify v1.9.0 h1:HtqpIVDClZ4nwg75+f6Lvsy/wHu+3BoSGCbBAcpTsTg=
 github.com/stretchr/testify v1.9.0/go.mod h1:r2ic/lqez/lEtzL7wO/rwa5dbSLXVDPFyf8C91i36aY=
 golang.org/x/sys v0.6.0/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
-golang.org/x/sys v0.19.0 h1:q5f1RH2jigJ1MoAWp2KTp3gm5zAGFUTarQZ5U386+4o=
-golang.org/x/sys v0.19.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=
+golang.org/x/sys v0.20.0 h1:Od9JTbYCk261bKm4M/mw7AklTlFYIa0bIp9BgSm1S8Y=
+golang.org/x/sys v0.20.0/go.mod h1:/VUhepiaJMQUp4+oa/7Zr1D23ma6VTLIYjOOTFZPUcA=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405 h1:yhCVgyC4o1eVCa2tZl7eS0r+SDo693bJlVdllGtEeKM=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
