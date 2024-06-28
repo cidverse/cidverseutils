@@ -10,8 +10,8 @@ import (
 )
 
 var (
-	validLogLevels  = []string{"trace", "debug", "info", "warn", "error"}
-	validLogFormats = []string{"plain", "color", "json"}
+	ValidLogLevels  = []string{"trace", "debug", "info", "warn", "error"}
+	ValidLogFormats = []string{"plain", "color", "json"}
 )
 
 type LogConfig struct {
@@ -26,8 +26,8 @@ func Configure(cfg LogConfig) {
 	// log format
 	if cfg.LogFormat == "" {
 		cfg.LogFormat = "plain"
-	} else if !slices.Contains(validLogFormats, cfg.LogFormat) {
-		log.Error().Str("current", cfg.LogFormat).Strs("valid", validLogFormats).Msg("invalid log format specified, defaulting to plain")
+	} else if !slices.Contains(ValidLogFormats, cfg.LogFormat) {
+		log.Error().Str("current", cfg.LogFormat).Strs("valid", ValidLogFormats).Msg("invalid log format specified, defaulting to plain")
 		cfg.LogFormat = "plain"
 	}
 	var logContext zerolog.Context
@@ -48,8 +48,8 @@ func Configure(cfg LogConfig) {
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
 
 	// log level
-	if !slices.Contains(validLogLevels, cfg.LogLevel) {
-		log.Error().Str("current", cfg.LogLevel).Strs("valid", validLogLevels).Msg("invalid log level specified, defaulting to info")
+	if !slices.Contains(ValidLogLevels, cfg.LogLevel) {
+		log.Error().Str("current", cfg.LogLevel).Strs("valid", ValidLogLevels).Msg("invalid log level specified, defaulting to info")
 		cfg.LogLevel = "info"
 	}
 	if cfg.LogLevel == "trace" {
