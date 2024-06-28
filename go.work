@@ -12,4 +12,5 @@ use (
 	network
 	redact
 	version
+	./zerologconfig
 )
