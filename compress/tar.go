@@ -40,7 +40,7 @@ func TARCreate(inputDirectory string, outputFile string) error {
 
 		// Create a new tar header for the file
 		header := &tar.Header{
-			Name: filePath[len(inputDirectory)+1:],
+			Name: "./" + filePath[len(inputDirectory)+1:], // use explicitly relative paths
 			Mode: int64(fileInfo.Mode().Perm()),
 			Size: fileInfo.Size(),
 		}
