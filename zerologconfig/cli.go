@@ -34,7 +34,7 @@ func Configure(cfg LogConfig) {
 	if cfg.LogFormat == "plain" {
 		logContext = zerolog.New(os.Stderr).Output(zerolog.ConsoleWriter{Out: os.Stderr, NoColor: true}).With().Timestamp()
 	} else if cfg.LogFormat == "color" {
-		colorableOutput := colorable.NewColorableStdout()
+		colorableOutput := colorable.NewColorableStderr()
 		logContext = zerolog.New(os.Stderr).Output(zerolog.ConsoleWriter{Out: colorableOutput, NoColor: false}).With().Timestamp()
 	} else if cfg.LogFormat == "json" {
 		logContext = zerolog.New(os.Stderr).Output(os.Stderr).With().Timestamp()
