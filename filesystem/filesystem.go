@@ -32,7 +32,7 @@ func ExecutableDir() string {
 func WorkingDirOrPanic() string {
 	workingDir, err := os.Getwd()
 	if err != nil {
-		slog.Error("failed to determinate working directory", err)
+		slog.Error("failed to determinate working directory", "err", err)
 		panic(err)
 	}
 
