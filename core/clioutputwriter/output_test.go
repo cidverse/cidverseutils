@@ -95,23 +95,6 @@ repo2,action2
 	assert.Equal(t, expected, output.String())
 }
 
-func TestPrintData_NuShellFormat(t *testing.T) {
-	data := TabularData{
-		Headers: []string{"REPOSITORY", "ACTION"},
-		Rows: [][]interface{}{
-			{"repo1", "action1"},
-			{"repo2", "action2"},
-		},
-	}
-
-	var output bytes.Buffer
-	err := PrintData(&output, data, FormatNuShell)
-	assert.NoError(t, err)
-
-	expected := `[["REPOSITORY" "ACTION"]; ["repo1" "action1"] ["repo2" "action2"]]`
-	assert.Equal(t, expected, output.String())
-}
-
 func TestPrintData_UnsupportedFormat(t *testing.T) {
 	data := TabularData{
 		Headers: []string{"REPOSITORY", "ACTION"},

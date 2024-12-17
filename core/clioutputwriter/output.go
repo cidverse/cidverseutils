@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"strconv"
 	"strings"
 	"text/tabwriter"
 )
@@ -58,15 +57,13 @@ func SupportedOutputFormats() []string {
 		string(FormatTable),
 		string(FormatJSON),
 		string(FormatCSV),
-		string(FormatNuShell),
 	}
 }
 
 // DefaultOutputFormat returns the suggested output format
 func DefaultOutputFormat() Format {
-	// detect nushell
 	if _, ok := os.LookupEnv("NU_VERSION"); ok {
-		return FormatNuShell
+		return FormatJSON
 	}
 
 	return FormatTable
@@ -81,8 +78,6 @@ func PrintData(w io.Writer, data TabularData, format Format) error {
 		return printJSON(w, data)
 	case FormatCSV:
 		return printCSV(w, data)
-	case FormatNuShell:
-		return printNuShell(w, data)
 	default:
 		return errors.Join(ErrUnsupportedFormat, fmt.Errorf(string(format)))
 	}
@@ -140,67 +135,6 @@ func printCSV(w io.Writer, data TabularData) error {
 		}
 	}
 	return nil
-}
-
-// printNuShell renders the data in Nushell format. - e.g. [[a b]; [1 2]] where a b is the header and 1 2 is the first row
-func printNuShell(w io.Writer, data TabularData) error {
-	_, err := fmt.Fprint(w, "[[")
-	if err != nil {
-		return err
-	}
-
-	// Write the header row
-	for i, header := range data.Headers {
-		_, err = fmt.Fprint(w, strconv.Quote(header))
-		if err != nil {
-			return err
-		}
-		if i < len(data.Headers)-1 {
-			_, err = fmt.Fprint(w, " ")
-			if err != nil {
-				return err
-			}
-		}
-	}
-	_, err = fmt.Fprint(w, "]; ")
-	if err != nil {
-		return err
-	}
-
-	for i, row := range data.Rows {
-		_, err = fmt.Fprint(w, "[")
-		if err != nil {
-			return err
-		}
-
-		strRow := interfaceToStringRow(row)
-		for j, cell := range strRow {
-			_, err = fmt.Fprint(w, strconv.Quote(cell))
-			if err != nil {
-				return err
-			}
-			if j < len(strRow)-1 {
-				_, err = fmt.Fprint(w, " ")
-				if err != nil {
-					return err
-				}
-			}
-		}
-
-		_, err = fmt.Fprint(w, "]")
-		if err != nil {
-			return err
-		}
-		if i < len(data.Rows)-1 {
-			_, err = fmt.Fprint(w, " ")
-			if err != nil {
-				return err
-			}
-		}
-	}
-
-	_, err = fmt.Fprint(w, "]")
-	return err
 }
 
 func interfaceToStringRow(row []interface{}) []string {
