@@ -86,13 +86,20 @@ func GenerateFileMapByDeepExtension(files []string) map[string][]string {
 	extensionMap := make(map[string][]string)
 	for _, file := range files {
 		fileName := filepath.Base(file)
-		extIndex := strings.Index(fileName, ".")
+		ext := fileName
 
-		if extIndex != -1 {
-			ext := fileName[extIndex+1:]
-			extensionMap[ext] = append(extensionMap[ext], file)
-		} else {
+		if !strings.Contains(fileName, ".") {
 			extensionMap[""] = append(extensionMap[""], file)
+			continue
+		}
+
+		for {
+			extIndex := strings.Index(ext, ".")
+			if extIndex == -1 {
+				break
+			}
+			ext = ext[extIndex+1:]
+			extensionMap[ext] = append(extensionMap[ext], file)
 		}
 	}
 	return extensionMap

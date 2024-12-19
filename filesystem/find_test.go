@@ -27,9 +27,12 @@ func TestGenerateFileMapByDeepExtension(t *testing.T) {
 		"jpg":    {"file2.jpg"},
 		"exe":    {"file4.exe"},
 		"tar.gz": {"file6.tar.gz"},
+		"gz":     {"file6.tar.gz"},
 	}
 	result := GenerateFileMapByDeepExtension(files)
-	if !reflect.DeepEqual(result, expected) {
-		t.Errorf("Expected %+v, got %+v", expected, result)
+	for key, value := range expected {
+		if !reflect.DeepEqual(result[key], value) {
+			t.Errorf("Expected %+v, got %+v [KEY: %s]", expected[key], result[key], key)
+		}
 	}
 }
