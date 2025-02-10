@@ -5,17 +5,10 @@ import (
 )
 
 func EnvMapToStringSlice(env map[string]string) []string {
-	fullEnv := make(map[string]string, len(env))
+	envLines := make([]string, 0, len(env))
 	for k, v := range env {
-		fullEnv[k] = v
-	}
-
-	// convert
-	var envLines []string
-	for k, v := range fullEnv {
 		envLines = append(envLines, k+"="+v)
 	}
-
 	return envLines
 }
 

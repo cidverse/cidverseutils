@@ -4,7 +4,6 @@ toolchain go1.22.2
 
 use (
 	core
-	ci
 	compress
 	containerruntime
 	exec
