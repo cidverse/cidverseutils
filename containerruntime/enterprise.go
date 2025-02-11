@@ -36,7 +36,7 @@ func (c *Container) ProxyConfiguration(httpProxy string, httpsProxy string, noPr
 		if err == nil {
 			javaProxyOpts = append(javaProxyOpts, "-Dhttp.proxyHost="+proxyURL.Hostname())
 			javaProxyOpts = append(javaProxyOpts, "-Dhttp.proxyPort="+proxyURL.Port())
-			javaProxyOpts = append(javaProxyOpts, "-Dhttp.nonProxyHosts="+ToJavaNoPoxyFormat(noProxy))
+			javaProxyOpts = append(javaProxyOpts, "-Dhttp.nonProxyHosts="+ToJavaNoProxyFormat(noProxy))
 		}
 	}
 	if httpsProxy != "" {
@@ -44,7 +44,7 @@ func (c *Container) ProxyConfiguration(httpProxy string, httpsProxy string, noPr
 		if err == nil {
 			javaProxyOpts = append(javaProxyOpts, "-Dhttps.proxyHost="+proxyURL.Hostname())
 			javaProxyOpts = append(javaProxyOpts, "-Dhttps.proxyPort="+proxyURL.Port())
-			javaProxyOpts = append(javaProxyOpts, "-Dhttps.nonProxyHosts="+ToJavaNoPoxyFormat(noProxy))
+			javaProxyOpts = append(javaProxyOpts, "-Dhttps.nonProxyHosts="+ToJavaNoProxyFormat(noProxy))
 		}
 	}
 	if len(javaProxyOpts) > 0 {
@@ -52,6 +52,6 @@ func (c *Container) ProxyConfiguration(httpProxy string, httpsProxy string, noPr
 	}
 }
 
-func ToJavaNoPoxyFormat(input string) string {
+func ToJavaNoProxyFormat(input string) string {
 	return strings.ReplaceAll(input, ",", "|")
 }
