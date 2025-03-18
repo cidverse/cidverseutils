@@ -126,3 +126,16 @@ func FileContainsString(file string, str string) bool {
 
 	return false
 }
+
+// ResolveAbsolutePath will resolve the absolute path of a given path
+func ResolveAbsolutePath(path string) string {
+	absPath, err := filepath.Abs(path)
+	if err != nil {
+		return ""
+	}
+	realPath, err := filepath.EvalSymlinks(absPath)
+	if err != nil {
+		return ""
+	}
+	return realPath
+}
