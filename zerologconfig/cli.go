@@ -1,12 +1,14 @@
 package zerologconfig
 
 import (
+	"log/slog"
 	"os"
 	"slices"
 
 	"github.com/mattn/go-colorable"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	slogzerolog "github.com/samber/slog-zerolog/v2"
 )
 
 var (
@@ -64,6 +66,27 @@ func Configure(cfg LogConfig) {
 		zerolog.SetGlobalLevel(zerolog.ErrorLevel)
 	}
 
+	// configure slog logger with zerolog adapter
+	logger := slog.New(slogzerolog.Option{Level: zerologToSlogLevel(zerolog.GlobalLevel()), Logger: &log.Logger}.NewZerologHandler())
+	slog.SetDefault(logger)
+
 	// logging config
 	log.Debug().Str("log-level", cfg.LogLevel).Str("log-format", cfg.LogFormat).Bool("log-caller", cfg.LogCaller).Msg("configured logging")
+}
+
+func zerologToSlogLevel(lvl zerolog.Level) slog.Level {
+	switch lvl {
+	case zerolog.TraceLevel:
+		return slog.LevelDebug
+	case zerolog.DebugLevel:
+		return slog.LevelDebug
+	case zerolog.InfoLevel:
+		return slog.LevelInfo
+	case zerolog.WarnLevel:
+		return slog.LevelWarn
+	case zerolog.ErrorLevel:
+		return slog.LevelError
+	default:
+		return slog.LevelInfo
+	}
 }
