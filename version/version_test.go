@@ -117,6 +117,7 @@ func TestFulfillsConstraint(t *testing.T) {
 	assert.True(t, FulfillsConstraint("v1.2.3", "1.2.3"))
 	assert.False(t, FulfillsConstraint("v1.2.3", "1.2.2"))
 	assert.False(t, FulfillsConstraint("v1.2.3", "1.2.4"))
+	assert.True(t, FulfillsConstraint("21.0.0-alpha.1", ">=0.0.0-0"))
 }
 
 func TestBumpMajor(t *testing.T) {

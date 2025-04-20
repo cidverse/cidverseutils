@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/Masterminds/semver/v3"
 	hashicorpVersion "github.com/hashicorp/go-version"
 )
 
@@ -20,13 +21,13 @@ func HighestReleaseType(numbers []ReleaseType) ReleaseType {
 
 // IsValidSemver checks that the given input is a valid semver version
 func IsValidSemver(input string) bool {
-	_, versionErr := hashicorpVersion.NewSemver(input)
+	_, versionErr := semver.NewVersion(input)
 	return versionErr == nil
 }
 
 // IsStable checks if the input is a stable semver version
 func IsStable(input string) bool {
-	ver, verErr := hashicorpVersion.NewSemver(input)
+	ver, verErr := semver.NewVersion(input)
 	if verErr != nil {
 		return false
 	}
@@ -43,7 +44,7 @@ func IsStable(input string) bool {
 // If the input string is not a valid version, an error is returned.
 // The function returns the formatted version string without a v prefix.
 func Format(input string) (string, error) {
-	ver, verErr := hashicorpVersion.NewSemver(input)
+	ver, verErr := semver.NewVersion(input)
 	if verErr != nil {
 		return "", fmt.Errorf("malformed version: %s", input)
 	}
@@ -59,12 +60,12 @@ func Format(input string) (string, error) {
 // Note: `Compare` only compares the major, minor, and patch version numbers.
 // It does not support comparison of build numbers or pre-release labels such as alpha, beta, etc.
 func Compare(left string, right string) (int, error) {
-	leftVer, leftVerErr := hashicorpVersion.NewSemver(left)
+	leftVer, leftVerErr := semver.NewVersion(left)
 	if leftVerErr != nil {
 		return 0, fmt.Errorf("failed to compare versions. left version is invalid: %s", leftVerErr.Error())
 	}
 
-	rightVer, rightVerErr := hashicorpVersion.NewSemver(right)
+	rightVer, rightVerErr := semver.NewVersion(right)
 	if rightVerErr != nil {
 		return 0, fmt.Errorf("failed to compare versions. right version is invalid: %s", rightVerErr.Error())
 	}
@@ -77,13 +78,13 @@ func Compare(left string, right string) (int, error) {
 // `constraint` should be a string that follows the format described in the semver 2.0.0 specification.
 // Example constraint strings: ">=1.2.3", "^1.2.3", "2.0.0".
 func FulfillsConstraint(version string, constraint string) bool {
-	ver, vErr := hashicorpVersion.NewVersion(version)
+	ver, vErr := semver.NewVersion(version)
 	if vErr != nil {
 		return false
 	}
 
-	// Constraints example.
-	constraints, constraintsErr := hashicorpVersion.NewConstraint(constraint)
+	// verify constraint
+	constraints, constraintsErr := semver.NewConstraint(constraint)
 	if constraintsErr != nil {
 		return false
 	}
