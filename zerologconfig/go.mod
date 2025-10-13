@@ -2,7 +2,7 @@ module github.com/cidverse/cidverseutils/zerologconfig
 
 go 1.23.0
 
-toolchain go1.25.0
+toolchain go1.25.3
 
 require (
 	github.com/mattn/go-colorable v0.1.14

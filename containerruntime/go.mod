@@ -2,7 +2,7 @@ module github.com/cidverse/cidverseutils/containerruntime
 
 go 1.23.0
 
-toolchain go1.25.0
+toolchain go1.25.3
 
 require (
 	github.com/cidverse/cidverseutils/ci v0.1.0
