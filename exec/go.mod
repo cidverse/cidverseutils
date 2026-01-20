@@ -1,9 +1,9 @@
 module github.com/cidverse/cidverseutils/exec
 
-go 1.23.0
+go 1.24.0
 
 toolchain go1.25.0
 
 require github.com/mattn/go-isatty v0.0.20
 
-require golang.org/x/sys v0.32.0 // indirect
+require golang.org/x/sys v0.40.0 // indirect

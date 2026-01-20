@@ -3,6 +3,7 @@ package filesystem
 import (
 	"io/fs"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"github.com/charlievieth/fastwalk"
@@ -49,6 +50,9 @@ func FindFiles(rootPath string, ignore IgnoreFunc, filter FilterFunc) ([]string,
 		}
 		return nil
 	})
+
+	// sort files
+	sort.Strings(files)
 
 	return files, err
 }

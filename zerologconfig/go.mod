@@ -1,6 +1,6 @@
 module github.com/cidverse/cidverseutils/zerologconfig
 
-go 1.23.0
+go 1.24.0
 
 toolchain go1.25.0
 
@@ -12,8 +12,8 @@ require (
 
 require (
 	github.com/mattn/go-isatty v0.0.20 // indirect
-	github.com/samber/lo v1.51.0 // indirect
+	github.com/samber/lo v1.52.0 // indirect
 	github.com/samber/slog-common v0.19.0 // indirect
-	golang.org/x/sys v0.32.0 // indirect
-	golang.org/x/text v0.24.0 // indirect
+	golang.org/x/sys v0.40.0 // indirect
+	golang.org/x/text v0.33.0 // indirect
 )
