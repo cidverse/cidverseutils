@@ -22,6 +22,14 @@ type LogConfig struct {
 	LogCaller bool
 }
 
+const (
+	LevelTrace = slog.LevelDebug - 1
+)
+
+var LevelNames = map[slog.Leveler]string{
+	LevelTrace: "TRACE",
+}
+
 // Configure configures zerolog with the provided configuration
 // Designed for use in CLI applications
 func Configure(cfg LogConfig) {
@@ -67,7 +75,11 @@ func Configure(cfg LogConfig) {
 	}
 
 	// configure slog logger with zerolog adapter
-	logger := slog.New(slogzerolog.Option{Level: zerologToSlogLevel(zerolog.GlobalLevel()), Logger: &log.Logger}.NewZerologHandler())
+	logger := slog.New(slogzerolog.Option{
+		Level:       zerologToSlogLevel(zerolog.GlobalLevel()),
+		Logger:      &log.Logger,
+		ReplaceAttr: replaceAttributes,
+	}.NewZerologHandler())
 	slog.SetDefault(logger)
 
 	// logging config
@@ -77,7 +89,7 @@ func Configure(cfg LogConfig) {
 func zerologToSlogLevel(lvl zerolog.Level) slog.Level {
 	switch lvl {
 	case zerolog.TraceLevel:
-		return slog.LevelDebug
+		return LevelTrace
 	case zerolog.DebugLevel:
 		return slog.LevelDebug
 	case zerolog.InfoLevel:
@@ -89,4 +101,19 @@ func zerologToSlogLevel(lvl zerolog.Level) slog.Level {
 	default:
 		return slog.LevelInfo
 	}
+}
+
+func replaceAttributes(groups []string, a slog.Attr) slog.Attr {
+	if a.Key == slog.LevelKey {
+		level := a.Value.Any().(slog.Level)
+		levelLabel, exists := LevelNames[level]
+
+		if !exists {
+			levelLabel = level.String()
+		}
+
+		a.Value = slog.StringValue(levelLabel)
+	}
+
+	return a
 }
