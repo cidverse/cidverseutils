@@ -6,4 +6,4 @@ toolchain go1.25.0
 
 require github.com/mattn/go-isatty v0.0.20
 
-require golang.org/x/sys v0.40.0 // indirect
+require golang.org/x/sys v0.41.0 // indirect
