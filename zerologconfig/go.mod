@@ -6,7 +6,7 @@ toolchain go1.25.0
 
 require (
 	github.com/mattn/go-colorable v0.1.14
-	github.com/rs/zerolog v1.35.0
+	github.com/rs/zerolog v1.35.1
 	github.com/samber/slog-zerolog/v2 v2.9.2
 )
 
